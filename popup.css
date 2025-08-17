@@ -1,5 +1,5 @@
 body {
-  width: 300px;
+  width: 350px;
   padding: 0;
   margin: 0;
   font-family: Arial, sans-serif;
@@ -10,6 +10,14 @@ body {
   background-color: #4285f4;
   color: white;
   text-align: center;
+}
+
+.search-bar {
+  width: 90%;
+  padding: 8px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
 }
 
 .yellow-section {
@@ -34,4 +42,9 @@ body {
 
 .tab-item:hover {
   background-color: #f5f5f5;
+}
+
+.tab-item.highlighted {
+  background-color: #e1f5fe;
+  font-weight: bold;
 }
