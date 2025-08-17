@@ -24,12 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleScroll(e) {
     e.preventDefault();
     scrollAccumulator += e.deltaY;
-    
+
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(() => {
       scrollAccumulator = 0;
     }, 200);
-    
+
     if (Math.abs(scrollAccumulator) >= SCROLL_THRESHOLD) {
       const direction = Math.sign(scrollAccumulator);
       scrollAccumulator = 0;
@@ -38,14 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function moveCurrentTab(direction) {
-    chrome.tabs.query({ currentWindow: true, active: true }, async (tabs) => {
+    let queryOptions = { currentWindow: true, active: true }
+
+    chrome.tabs.query(queryOptions, async (tabs) => {
       if (tabs.length === 0) return;
-      
+
       const currentTab = tabs[0]; // Pestaña activa actual
       const allTabs = await chrome.tabs.query({ currentWindow: true });
       const currentIndex = allTabs.findIndex(tab => tab.id === currentTab.id);
       const newIndex = currentIndex + direction;
-      
+
       if (newIndex >= 0 && newIndex < allTabs.length) {
         chrome.tabs.move(currentTab.id, { index: newIndex }, () => {
           loadTabs(); // Recargar la lista
@@ -53,4 +55,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  function ReloadCurrentPage() {
+    // Obtener la pestaña activa actual y recargarla
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs.length === 0) return;
+      const currentTab = tabs[0];
+
+      // Recargar la pestaña
+      chrome.tabs.reload(currentTab.id);
+    });
+  }
+
 });
