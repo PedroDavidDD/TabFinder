@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let scrollTimeout;
   let scrollAccumulator = 0;
   const SCROLL_THRESHOLD = 100;
+  let queryOptions = { currentWindow: true, active: true }
 
   // Cargar pestañas al abrir
   loadTabs();
@@ -33,37 +34,33 @@ document.addEventListener('DOMContentLoaded', () => {
     if (Math.abs(scrollAccumulator) >= SCROLL_THRESHOLD) {
       const direction = Math.sign(scrollAccumulator);
       scrollAccumulator = 0;
-      moveCurrentTab(direction);
+      navigateToTab(direction);
     }
   }
 
-  function moveCurrentTab(direction) {
-    let queryOptions = { currentWindow: true, active: true }
-
+  function navigateToTab(direction) {
     chrome.tabs.query(queryOptions, async (tabs) => {
       if (tabs.length === 0) return;
-
-      const currentTab = tabs[0]; // Pestaña activa actual
+      // Pestaña activa actual
+      const currentTab = tabs[0];
+      // Obtener todas las pestañas
       const allTabs = await chrome.tabs.query({ currentWindow: true });
+      // Obtener la pestaña actual entre todos
       const currentIndex = allTabs.findIndex(tab => tab.id === currentTab.id);
+      // indice [0,1,2] -> [1] +1 -> [2]
       const newIndex = currentIndex + direction;
+      // navegacion mutable;
+      let currentTabId = 0;
 
       if (newIndex >= 0 && newIndex < allTabs.length) {
-        chrome.tabs.move(currentTab.id, { index: newIndex }, () => {
-          loadTabs(); // Recargar la lista
-        });
+        currentTabId = allTabs[newIndex].id;
+      } else if (newIndex >= allTabs.length) {
+        currentTabId = allTabs[0].id;
+      } else if (newIndex < 0) {
+        currentTabId = allTabs[allTabs.length - 1].id;
       }
-    });
-  }
 
-  function ReloadCurrentPage() {
-    // Obtener la pestaña activa actual y recargarla
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs.length === 0) return;
-      const currentTab = tabs[0];
-
-      // Recargar la pestaña
-      chrome.tabs.reload(currentTab.id);
+      chrome.tabs.update(currentTabId, { active: true });
     });
   }
 
