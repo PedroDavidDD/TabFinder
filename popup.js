@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let scrollTimeout;
   let scrollAccumulator = 0;
   const SCROLL_THRESHOLD = 100;
-  let queryOptions = { currentWindow: true, active: true }
 
   // Cargar pestañas al abrir
   loadTabs();
@@ -26,16 +25,19 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     scrollAccumulator += e.deltaY;
 
+    // Verificamos si el movimiento acumulado es SUFICIENTEMENTE GRANDE
+    const scrollSuficiente = Math.abs(scrollAccumulator) >= SCROLL_THRESHOLD;
+
+    if (scrollSuficiente) {
+      const direction = Math.sign(scrollAccumulator);
+      navigateToTab(direction);
+      scrollAccumulator = 0;
+    }
+
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(() => {
       scrollAccumulator = 0;
     }, 200);
-
-    if (Math.abs(scrollAccumulator) >= SCROLL_THRESHOLD) {
-      const direction = Math.sign(scrollAccumulator);
-      scrollAccumulator = 0;
-      navigateToTab(direction);
-    }
   }
 
   function navigateToTab(direction) {
