@@ -1,6 +1,12 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-data.py
+# Environment variables
 .env
-.env.example
+.env.*
+!.env.example
+
+# Commit Helper
+commit_helper.py
+commit_helper.log
+data.py
