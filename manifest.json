@@ -12,10 +12,7 @@
     "default_popup": "popup.html",
     "default_icon": "icon.png"
   },
-  "permissions": [
-    "activeTab",
-    "tabs"
-  ],
+  "permissions": ["activeTab", "tabs"],
   "background": {
     "service_worker": "background.js"
   }

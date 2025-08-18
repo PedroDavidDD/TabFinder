@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   const tabList = document.getElementById('tabList');
+  const searchInput = document.getElementById('searchInput');
+
   let scrollTimeout;
   let scrollAccumulator = 0;
+  // Umbral de desplazamiento
   const SCROLL_THRESHOLD = 100;
 
   // Cargar pestañas al abrir
@@ -9,7 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Configurar el evento de scroll
   tabList.addEventListener('wheel', handleScroll, { passive: false });
+  // Actualiza el listado de pestañas
+  searchInput.addEventListener("input", handleSearch);
 
+  // Cargar todas las pestañas
   function loadTabs() {
     chrome.tabs.query({ currentWindow: true }, (tabs) => {
       tabList.innerHTML = tabs.map(tab => `
@@ -18,9 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
           <span>${tab.title}</span>
         </div>
       `).join('');
+
+      // Ir al seleccionar una pestaña
+      handleSelect();
     });
   }
-
+  
+  // Maneja el scroll para navegar entre pestañas
   function handleScroll(e) {
     e.preventDefault();
     scrollAccumulator += e.deltaY;
@@ -40,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 200);
   }
 
+  // Navega a la pestaña en la dirección según el scroll
   function navigateToTab(direction) {
     chrome.tabs.query({ currentWindow: true }, (allTabs) => {
       if (allTabs.length === 0) return;
@@ -63,4 +74,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Maneja la búsqueda de pestañas
+  function handleSearch() {
+    const query = searchInput.value.toLowerCase();
+    const tabItems = document.querySelectorAll(".tab-item");
+
+    tabItems.forEach(item => {
+      const title = item.textContent.toLowerCase();
+      item.style.display = title.includes(query) ? "block" : "none";
+    });
+  }
+
+  // Maneja la selección de pestañas
+  function handleSelect() {
+    document.querySelectorAll('.tab-item').forEach(item => {
+      item.addEventListener("click", () => {
+        const tabId = parseInt(item.dataset.tabId);
+        chrome.tabs.update(tabId, { active: true });
+      });
+    });
+  }
 });
