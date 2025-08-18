@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
       handleSelect();
     });
   }
-  
+
   // Maneja el scroll para navegar entre pestañas
   function handleScroll(e) {
     e.preventDefault();
@@ -83,6 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const title = item.textContent.toLowerCase();
       item.style.display = title.includes(query) ? "block" : "none";
     });
+    
+    // Maneja la selección de la primera pestaña visible al presionar Enter
+    searchInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        selectFirstVisibleTab();
+      }
+    });
   }
 
   // Maneja la selección de pestañas
@@ -93,5 +100,15 @@ document.addEventListener('DOMContentLoaded', () => {
         chrome.tabs.update(tabId, { active: true });
       });
     });
+  }
+
+  // Selecciona la primera pestaña visible
+  function selectFirstVisibleTab() {
+    const tabItems = Array.from(document.querySelectorAll(".tab-item"))
+      .filter(item => item.style.display !== "none");
+    if (tabItems.length > 0) {
+      const tabId = parseInt(tabItems[0].dataset.tabId);
+      chrome.tabs.update(tabId, { active: true });
+    }
   }
 });
