@@ -88,6 +88,7 @@ body {
   border-radius: 8px;
   transition: all 0.2s ease;
   border-left: 3px solid transparent;
+  overflow: hidden;
 }
 
 .tab-item img {
