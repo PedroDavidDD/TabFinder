@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
   loadTabs();
 
   // Configurar el evento de scroll
-  tabList.addEventListener('wheel', handleScroll, { passive: false });
+  // tabList.addEventListener('wheel', handleScroll, { passive: false });
+  
   // Actualiza el listado de pestañas
   searchInput.addEventListener("input", handleSearch);
 
