@@ -25,19 +25,19 @@ Una extensión ligera para Chrome y Edge que te permite buscar entre todas tus p
 5. Selecciona la carpeta raíz del proyecto (donde está `manifest.json`)
 
 ## 📁 Estructura del Proyecto
-
-TabFinder/
-│   .gitattributes
-│   .gitignore
-│   background.js
-│   icon.png
-│   manifest.json
-│   README.md
-└───popup
-        popup.css
-        popup.html
-        popup.js
-        
+```
+📦 TabFinder/
+├── 📄 .gitattributes
+├── 📄 .gitignore
+├── 📄 background.js
+├── 📄 icon.png
+├── 📄 manifest.json
+├── 📄 README.md
+└── 📁 popup/
+    ├── 📄 popup.css
+    ├── 📄 popup.html
+    └── 📄 popup.js
+```
 ## 📜 Licencia
 
 Este proyecto se distribuye bajo la licencia MIT. Puedes modificarlo y adaptarlo libremente.
