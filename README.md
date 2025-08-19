@@ -2,12 +2,9 @@
 
 🧠 TabFinder — Control de Pestañas Web  
 ¿Tienes mil pestañas abiertas? Encuentra la que buscas en segundos.  
-🔍 Busca por nombre, título o URL  
+🔍 Busca por título
 ⚡ Cambia de pestaña al instante  
-🧩 Compatible con Chrome y Edge  
-
-🔍 Encuentra cualquier pestaña abierta al instante.  
-Una extensión ligera para Chrome y Edge que te permite buscar entre todas tus pestañas activas y saltar directamente a la que necesitas.
+🧩 Extensión ligera para Chrome y Edge
 
 ## 🚀 Características
 
